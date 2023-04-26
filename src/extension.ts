@@ -23,8 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(setTokenCmd, setUserNameCmd);
 
 
-	const token = await config.get('token') as string;
-	const username = await config.get('username') as string;
+	const token = config.token
+	const username = config.username
 	if (!token && !username) {
 		vscode.window.showErrorMessage('[github_info] Please set your GitHub token or username');
 		statusBarItem.hide()
@@ -45,7 +45,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			} catch (error: any) {
 				errorHandling(error, statusBarItem)
 			}
-		}, ms("1h"))
+		}, ms(config.intervalTime))
 	} catch (error: any) {
 		errorHandling(error, statusBarItem)
 	}
