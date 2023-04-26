@@ -1,71 +1,36 @@
-# github-info README
+# GitHub Info
 
-This is the README for your extension "github-info". After writing up a brief description, we recommend including the following sections.
+
+GitHub Info is a VS Code extension that shows your GitHub information in the status bar.
+
+
+<img src="./.github/first1.png"/>
+
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+The extension shows the following information:
 
-For example if there is an image subfolder under your extension project workspace:
+- Your GitHub username
+- Your number of followers
+- Your number of following users
+- Detect new followers/following
 
-\!\[feature X\]\(images/feature-x.png\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+All the information is updated every hour, and you can customize the update interval time in the extension settings.
 
-## Requirements
+## Installation
+You can install the extension from the VS Code Marketplace. Just search for "GitHub Info" in the extensions tab or [click here](https://marketplace.visualstudio.com/items?itemName=sajjadmrx.github-info) to go to the extension page.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+# Configuration
 
-## Extension Settings
+To use the extension, you need to set your GitHub token and username in the extension settings. You can also customize the update interval time by choosing one of the available options: 5 hours, 4 hours, 3 hours, 1 hour, 30 minutes, or 20 minutes.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+To access the extension settings, go to the VS Code settings (`Ctrl + ,` on Windows or Cmd `+ ,` on Mac), and search for "GitHub Info". Alternatively, you can use the Command Palette (`Ctrl + Shift + P` on Windows or `Cmd + Shift + P` on Mac), and search for "GitHub Info: Open Settings".
 
-For example:
 
-This extension contributes the following settings:
+## Usage
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Once you set your GitHub token or username in the extension settings, the information will be displayed in the status bar
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+If you encounter any issues or have suggestions for improvements, please open an issue on the [GitHub repository](https://github.com/sajjadmrx/vscode-github-info)
