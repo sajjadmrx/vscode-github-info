@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 	try {
-		const user: GithubUserProfile = !token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
+		const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
 
 		updateHandling(user, statusBarItem)
 		setInterval(async () => {
