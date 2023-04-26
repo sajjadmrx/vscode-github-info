@@ -51,6 +51,12 @@
           ],
           "default": "1h",
           "description": "The interval time for updating the status bar, specified in hours or minutes. Choose from the available options: 5 hours, 4 hours, 3 hours, 1 hour, 30 minutes, or 20 minutes. The default interval is 1 hour."
+        },
+        "github_info.currentFollowers": {
+          "type": "number",
+          "readOnly": true,
+          "default": 0,
+          "description": "The number of current followers"
         }
       }
     }

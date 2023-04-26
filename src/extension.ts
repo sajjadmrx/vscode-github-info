@@ -9,6 +9,7 @@ import axios from 'axios';
 import { getFormatFollowersCount } from './utils/getFormatFollowersCount.util';
 import { getStatusBarColor } from './utils/getStatusBarColor.util';
 import { getConfig } from './utils/config.util';
+import { CONFIG_KEYS } from './constants/config-keys.constant';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -37,14 +38,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	try {
 		const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
 
-		updateHandling(user, statusBarItem)
+		updateHandling(user, config.currentFollowers, statusBarItem)
 		setInterval(async () => {
 			try {
 				statusBarItem.text = "Updating.."
 				statusBarItem.show()
 				const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
 
-				updateHandling(user, statusBarItem)
+				updateHandling(user, config.currentFollowers, statusBarItem)
 			} catch (error: any) {
 				errorHandling(error, statusBarItem)
 			}
@@ -60,9 +61,9 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 
-let previousFollowersCount: number = 0
 
-function updateHandling(user: GithubUserProfile, statusBarItem: vscode.StatusBarItem): void {
+async function updateHandling(user: GithubUserProfile, previousFollowersCount: number, statusBarItem: vscode.StatusBarItem): Promise<void> {
+	const config = getConfig()
 	const currentFollowersCount = user.followers;
 	let message =
 		`$(mark-github)  Followers: ${getFormatFollowersCount(currentFollowersCount)} | Following: ${getFormatFollowersCount(user.following)}`;
@@ -74,6 +75,7 @@ function updateHandling(user: GithubUserProfile, statusBarItem: vscode.StatusBar
 			message += ` (${Math.abs(diff)} unfollower${Math.abs(diff) > 1 ? 's' : ''})`;
 		}
 	}
+	await config.update(CONFIG_KEYS.currentFollowers, currentFollowersCount)
 	previousFollowersCount = currentFollowersCount;
 	statusBarItem.text = message;
 	statusBarItem.tooltip = `"${user.login}"'s GitHub Profile`

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getConfig } from '../utils';
+import { getConfig } from '../utils/config.util';
 
 
 export async function setUsername() {
