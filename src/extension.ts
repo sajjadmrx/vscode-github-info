@@ -6,6 +6,8 @@ import { getGithubUserProfile, getGithubCurrentUserProfile } from './requests';
 import { setUsername } from './commands/setUsername';
 import { LogLevel, log } from './logger';
 import ms from "ms"
+import axios from 'axios';
+import { error } from 'console';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -32,15 +34,31 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	try {
 		const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
-		updateFollowersBar(user, statusBarItem)
+
+		updateHandling(user, statusBarItem)
 		setInterval(async () => {
 			try {
 				statusBarItem.text = "Updating.."
 				statusBarItem.show()
 				const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
-				updateFollowersBar(user, statusBarItem)
-			} catch (er) {
 
+				updateHandling(user, statusBarItem)
+			} catch (error: any) {
+				if (axios.isAxiosError(error)) {
+					const { response } = error;
+					if (response?.status === 403 && response?.headers["x-ratelimit-remaining"] === "0") {
+						statusBarItem.text = "LIMIT";
+						statusBarItem.tooltip = "GitHub API rate limit exceeded";
+						statusBarItem.show()
+					} else {
+						statusBarItem.hide()
+					}
+				} else {
+					log(LogLevel.Error, error)
+					statusBarItem.text = `Error`;
+					statusBarItem.tooltip = `Error occurred: ${error.message}`
+					statusBarItem.show()
+				}
 			}
 		}, ms("1h"))
 	} catch (er: any) {
@@ -54,9 +72,23 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-function updateFollowersBar(user: GithubUserProfile, statusBarItem: vscode.StatusBarItem): void {
-	statusBarItem.text = `\$(mark-github)  Followers: ${user.followers} | Following: ${user.following}`
-	statusBarItem.color = getStatusBarColor(user.followers)
+
+let previousFollowersCount: number = 0
+
+function updateHandling(user: GithubUserProfile, statusBarItem: vscode.StatusBarItem): void {
+	const currentFollowersCount = user.followers;
+	let message = `$(mark-github)  Followers: ${currentFollowersCount} | Following: ${user.following}`;
+	if (previousFollowersCount > 0) {
+		const diff = currentFollowersCount - previousFollowersCount;
+		if (diff > 0) {
+			message += ` (${diff} new follower${diff > 1 ? 's' : ''})`;
+		} else if (diff < 0) {
+			message += ` (${Math.abs(diff)} unfollower${Math.abs(diff) > 1 ? 's' : ''})`;
+		}
+	}
+	previousFollowersCount = currentFollowersCount;
+	statusBarItem.text = message;
+	statusBarItem.color = getStatusBarColor(currentFollowersCount);
 }
 
 
