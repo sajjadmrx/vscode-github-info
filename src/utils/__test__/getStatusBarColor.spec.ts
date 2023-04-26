@@ -1,21 +1,33 @@
-import { getStatusBarColor } from "../getStatusBarColor.util"
+jest.mock('../config.util', () => ({
+    getConfig: jest.fn()
+}));
 
-describe('getStatusBarColor', () => {
-    it('returns red for followersCount < 50', () => {
-        expect(getStatusBarColor(49)).toBe('#f44336');
-        expect(getStatusBarColor(0)).toBe('#f44336');
-        expect(getStatusBarColor(-1)).toBe('#f44336');
+import { getConfig } from "../config.util";
+import { getStatusBarColor } from "../getStatusBarColor.util";
+
+describe("getStatusBarColor", () => {
+    beforeEach(() => {
+        // @ts-ignore
+        getConfig.mockReturnValue({
+            colors: {
+                low: "#f44336",
+                medium: "#ffc107",
+                high: "#4caf50"
+            }
+        });
+    })
+    it("returns the correct color for less than 100 followers", () => {
+        const color = getStatusBarColor(50);
+        expect(color).toBe("#f44336");
     });
 
-    it('returns yellow for 50 <= followersCount < 200', () => {
-        expect(getStatusBarColor(50)).toBe('#ffc107');
-        expect(getStatusBarColor(100)).toBe('#ffc107');
-        expect(getStatusBarColor(199)).toBe('#ffc107');
+    it("returns the correct color for between 100 and 500 followers", () => {
+        const color = getStatusBarColor(200);
+        expect(color).toBe("#ffc107");
     });
 
-    it('returns green for followersCount >= 200', () => {
-        expect(getStatusBarColor(200)).toBe('#4caf50');
-        expect(getStatusBarColor(500)).toBe('#4caf50');
-        expect(getStatusBarColor(999999999)).toBe('#4caf50');
+    it("returns the correct color for more than 500 followers", () => {
+        const color = getStatusBarColor(1000);
+        expect(color).toBe("#4caf50");
     });
 });

@@ -4,7 +4,12 @@ export type Config = {
     token: string,
     username: string,
     intervalTime: string,
-    currentFollowers: number
+    currentFollowers: number,
+    colors: {
+        low: string,
+        medium: string,
+        high: string
+    }
 }
 export type WorkspaceExtensionConfiguration = vscode.WorkspaceConfiguration & Config
 

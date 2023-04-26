@@ -57,6 +57,26 @@
           "readOnly": true,
           "default": 0,
           "description": "The number of current followers"
+        },
+        "github_info.colors": {
+          "type": "object",
+          "properties": {
+            "low": {
+              "type": "string",
+              "default": "#e0e0de",
+              "description": "The color for less than 100 followers"
+            },
+            "medium": {
+              "type": "string",
+              "default": "#ffc107",
+              "description": "The color for between 100 and 500 followers"
+            },
+            "high": {
+              "type": "string",
+              "default": "#4caf50",
+              "description": "The color for more than 500 followers"
+            }
+          }
         }
       }
     }
