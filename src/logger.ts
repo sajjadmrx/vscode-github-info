@@ -2,7 +2,7 @@
 import { window } from 'vscode';
 import dayjs from 'dayjs';
 
-const outputChannel = window.createOutputChannel('Discord Presence');
+const outputChannel = window.createOutputChannel('GitHub Info');
 
 export const enum LogLevel {
     Trace = 'TRACE',

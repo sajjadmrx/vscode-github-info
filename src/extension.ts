@@ -7,7 +7,6 @@ import { setUsername } from './commands/setUsername';
 import { LogLevel, log } from './logger';
 import ms from "ms"
 import axios from 'axios';
-import { error } from 'console';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -33,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	}
 
 	try {
-		const user: GithubUserProfile = token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
+		const user: GithubUserProfile = !token ? await getGithubCurrentUserProfile(token) : await getGithubUserProfile(username)
 
 		updateHandling(user, statusBarItem)
 		setInterval(async () => {
@@ -44,26 +43,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
 				updateHandling(user, statusBarItem)
 			} catch (error: any) {
-				if (axios.isAxiosError(error)) {
-					const { response } = error;
-					if (response?.status === 403 && response?.headers["x-ratelimit-remaining"] === "0") {
-						statusBarItem.text = "LIMIT";
-						statusBarItem.tooltip = "GitHub API rate limit exceeded";
-						statusBarItem.show()
-					} else {
-						statusBarItem.hide()
-					}
-				} else {
-					log(LogLevel.Error, error)
-					statusBarItem.text = `Error`;
-					statusBarItem.tooltip = `Error occurred: ${error.message}`
-					statusBarItem.show()
-				}
+				errorHandling(error, statusBarItem)
 			}
 		}, ms("1h"))
-	} catch (er: any) {
-		log(LogLevel.Error, er)
-		statusBarItem.hide()
+	} catch (error: any) {
+		errorHandling(error, statusBarItem)
 	}
 
 
@@ -88,10 +72,28 @@ function updateHandling(user: GithubUserProfile, statusBarItem: vscode.StatusBar
 	}
 	previousFollowersCount = currentFollowersCount;
 	statusBarItem.text = message;
+	statusBarItem.tooltip = `"${user.login}"'s GitHub Profile`
 	statusBarItem.color = getStatusBarColor(currentFollowersCount);
 }
 
-
+function errorHandling(error: any, statusBarItem: vscode.StatusBarItem) {
+	if (axios.isAxiosError(error)) {
+		const { response } = error;
+		if (response?.status === 403 && response?.headers["x-ratelimit-remaining"] === "0") {
+			statusBarItem.text = "API LIMIT";
+			statusBarItem.color = "yellow";
+			statusBarItem.tooltip = "💡 You have reached the rate limit for the GitHub API. Please try again later or increase your rate limit by authenticating with a personal access token."
+			statusBarItem.show()
+		} else {
+			statusBarItem.hide()
+		}
+	} else {
+		log(LogLevel.Error, error)
+		statusBarItem.text = `Error`;
+		statusBarItem.tooltip = `Error occurred: ${error.message}`
+		statusBarItem.show()
+	}
+}
 
 
 
