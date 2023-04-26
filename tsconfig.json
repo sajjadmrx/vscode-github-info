@@ -35,6 +35,9 @@
 			"ESNext"
 		],
 		"target": "ES2021",
-		"useDefineForClassFields": true
-	}
+		"useDefineForClassFields": true,
+	},
+	"exclude": [
+		"**/*spec.ts",
+	]
 }

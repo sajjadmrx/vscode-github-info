@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { getConfig, getStatusBarColor } from './utils';
 import { GithubUserProfile } from './interfaces/github.interface';
 import { setAccessToken } from './commands/setAccessToken.cmd';
 import { getGithubUserProfile, getGithubCurrentUserProfile } from './requests';
@@ -7,6 +6,9 @@ import { setUsername } from './commands/setUsername';
 import { LogLevel, log } from './logger';
 import ms from "ms"
 import axios from 'axios';
+import { getFormatFollowersCount } from './utils/getFormatFollowersCount.util';
+import { getStatusBarColor } from './utils/getStatusBarColor.util';
+import { getConfig } from './utils/config.util';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -62,7 +64,8 @@ let previousFollowersCount: number = 0
 
 function updateHandling(user: GithubUserProfile, statusBarItem: vscode.StatusBarItem): void {
 	const currentFollowersCount = user.followers;
-	let message = `$(mark-github)  Followers: ${currentFollowersCount} | Following: ${user.following}`;
+	let message =
+		`$(mark-github)  Followers: ${getFormatFollowersCount(currentFollowersCount)} | Following: ${getFormatFollowersCount(user.following)}`;
 	if (previousFollowersCount > 0) {
 		const diff = currentFollowersCount - previousFollowersCount;
 		if (diff > 0) {

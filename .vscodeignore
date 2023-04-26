@@ -12,3 +12,4 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 .github
+jest.config.ts
