@@ -17,17 +17,17 @@
   "contributes": {
     "commands": [
       {
-        "command": "github-info.auth",
-        "title": "Authenticate with GitHub"
+        "command": "github-info.set-token",
+        "title": "set github access token"
       },
       {
         "command": "github-info.set-username",
-        "title": "set GitHub Username"
+        "title": "set github Username"
       }
     ],
     "configuration": {
       "type": "object",
-      "title": "GitHub Info",
+      "title": "github info",
       "properties": {
         "github_info.token": {
           "type": "string",

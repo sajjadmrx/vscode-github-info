@@ -17,7 +17,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	const config = getConfig()
 
 
-	let setTokenCmd = vscode.commands.registerCommand('github-info.auth', setAccessToken);
+	let setTokenCmd = vscode.commands.registerCommand('github-info.set-token', setAccessToken);
 	let setUserNameCmd = vscode.commands.registerCommand('github-info.set-username', setUsername);
 
 	context.subscriptions.push(setTokenCmd, setUserNameCmd);
@@ -27,7 +27,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	const username = config.username
 	if (!token && !username) {
 		vscode.window.showErrorMessage('[github_info] Please set your GitHub token or username');
-		statusBarItem.hide()
+		statusBarItem.text = "[github_info] error";
+		statusBarItem.tooltip = "[github_info] Please set your GitHub token or username"
 		return;
 	}
 
@@ -85,7 +86,8 @@ function errorHandling(error: any, statusBarItem: vscode.StatusBarItem) {
 			statusBarItem.tooltip = "💡 You have reached the rate limit for the GitHub API. Please try again later or increase your rate limit by authenticating with a personal access token."
 			statusBarItem.show()
 		} else {
-			statusBarItem.hide()
+			statusBarItem.text = "[github-info] error";
+			statusBarItem.tooltip = response?.status.toString() || "500"
 		}
 	} else {
 		log(LogLevel.Error, error)

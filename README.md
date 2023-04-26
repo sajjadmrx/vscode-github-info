@@ -24,10 +24,25 @@ You can install the extension from the VS Code Marketplace. Just search for "Git
 
 # Configuration
 
-To use the extension, you need to set your GitHub token and username in the extension settings. You can also customize the update interval time by choosing one of the available options: 5 hours, 4 hours, 3 hours, 1 hour, 30 minutes, or 20 minutes.
+To access the extension settings, go to the VS Code settings (`Ctrl +`, on Windows or `Cmd + ,` on Mac), and search for "github info". Alternatively, you can use the Command Palette (`Ctrl + Shift + P` on Windows or `Cmd + Shift + P` on Mac), and search for "github info: Open Settings". In the settings, you can set your GitHub access token and username by clicking the "Edit in settings.json" button. You can also use the following commands to set your token and username:
 
-To access the extension settings, go to the VS Code settings (`Ctrl + ,` on Windows or Cmd `+ ,` on Mac), and search for "GitHub Info". Alternatively, you can use the Command Palette (`Ctrl + Shift + P` on Windows or `Cmd + Shift + P` on Mac), and search for "GitHub Info: Open Settings".
+(optional) github info: Set GitHub Access Token: Set your GitHub access token.
+github info: Set GitHub Username: Set your GitHub username.
 
+Check out the following tutorial videos to learn how to set your token and username:
+
+|                                                     set username                                                     |
+| :------------------------------------------------------------------------------------------------------------------: |
+| <video src="https://user-images.githubusercontent.com/66132114/234603922-aa7c9096-c3f6-4f30-acfc-e2a30b4df54f.mp4"/> |
+
+
+|                                                 set token (optional)                                                 |
+| :------------------------------------------------------------------------------------------------------------------: |
+| <video src="https://user-images.githubusercontent.com/66132114/234604030-1acf6a79-26dd-4e23-a0ad-934f9a7232d8.mp4"/> |
+
+|                                                        reload                                                        |
+| :------------------------------------------------------------------------------------------------------------------: |
+| <video src="https://user-images.githubusercontent.com/66132114/234604088-cc577322-ac62-4021-b896-25ad707ff272.mp4"/> |
 
 ## Usage
 
