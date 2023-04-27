@@ -75,7 +75,7 @@ async function updateHandling(user: GithubUserProfile, previousFollowersCount: n
 			message += ` (${Math.abs(diff)} unfollower${Math.abs(diff) > 1 ? 's' : ''})`;
 		}
 	}
-	await config.update(CONFIG_KEYS.currentFollowers, currentFollowersCount)
+	await config.update(CONFIG_KEYS.currentFollowers, currentFollowersCount, vscode.ConfigurationTarget.Global)
 	previousFollowersCount = currentFollowersCount;
 	statusBarItem.text = message;
 	statusBarItem.tooltip = `"${user.login}"'s GitHub Profile`
