@@ -2,7 +2,7 @@
   "name": "github-info",
   "displayName": "github-info",
   "description": "",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.63.1"
   },
