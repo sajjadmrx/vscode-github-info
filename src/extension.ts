@@ -10,10 +10,11 @@ import { getFormatFollowersCount } from './utils/getFormatFollowersCount.util';
 import { getStatusBarColor } from './utils/getStatusBarColor.util';
 import { getConfig } from './utils/config.util';
 import { CONFIG_KEYS } from './constants/config-keys.constant';
+import { getSession } from './auth/auth';
 
 export async function activate(context: vscode.ExtensionContext) {
 	const statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-	statusBarItem.text = "Loading...";
+	statusBarItem.text = "Activating Github-info extension...";
 	statusBarItem.show();
 
 
@@ -25,8 +26,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(setTokenCmd, setUserNameCmd);
 
+	const session = await getSession();
+	if (!session)
+		return undefined;
 
-	const token = config.token
+
+	const token: string = session.accessToken //|| config.token
 	const username = config.username
 	if (!token && !username) {
 		vscode.window.showErrorMessage('[github_info] Please set your GitHub token or username');
@@ -101,7 +106,4 @@ function errorHandling(error: any, statusBarItem: vscode.StatusBarItem) {
 		statusBarItem.show()
 	}
 }
-
-
-
 
