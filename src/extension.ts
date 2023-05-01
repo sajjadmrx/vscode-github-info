@@ -27,8 +27,11 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(setTokenCmd, setUserNameCmd);
 
 	const session = await getSession();
-	if (!session)
-		return undefined;
+	if (!session) {
+		statusBarItem.text = "[github_info] error"
+		statusBarItem.tooltip = "[github_info] Please set your GitHub token or username"
+		return;
+	}
 
 
 	const token: string = session.accessToken //|| config.token
